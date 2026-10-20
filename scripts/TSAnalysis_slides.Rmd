@@ -996,12 +996,56 @@ A visual inspection of the correlogram is often very helpful.
 
 ## 2.7.2 Interpreting the correlogram
 Interpreting the meaning of a set of autocorrelation coefficients is not always easy.
-Here the author offers some general advice.
+Here the author offers some **general advice** in regards to the following series;
 
 - Non-stationary series
 - Short-term correlation
 - Outliers
 - General Remarks
+
+## Interpreting the correlogram | General advice {.smaller}
+
+```{r CorrelogramInterpretation, echo = FALSE}
+fluidPage(
+  sidebarLayout(
+      sidebarPanel(
+        selectInput("seriesID", "Select type of series",
+                    choices = c(paste0("Non-stationary","\n","series"), 
+                                "Stationary",
+                                paste0("With","\n","outliers"), 
+                                "General"))
+        , width = 3),
+      mainPanel(
+        tabsetPanel(id = "PlotXCorrelogram",
+              tabPanel(title = "Time plot",
+                    plotlyOutput("Lefttimeplot")
+                             ),
+              tabPanel(title = "Correlogram",
+                       plotlyOutput("Rightcorrelogram"))
+                )
+        )
+    )
+)
+
+output$Lefttimeplot <- renderPlotly({
+
+  validate(
+    need(input$seriesID == "seriesID",
+         "Visualizations for this option are coming soon")
+  )
+
+  correlogramtimeplot <- ggplot(data = consumption, aes(x = date))+
+                          geom_point(aes(y = amount), colour = "#CC9933")+
+                          geom_line(aes(y = amount), colour = "#CC9933",
+                                    linewidth = 0.75)+
+                          labs(title = paste0("Local power consumption in '000 KWh","\n", "January 2019 - July 2026"), x = "Time", y = "Power in '000 KWh")+
+                          theme_clean()
+
+  ggplotly(correlogramtimeplot)
+
+
+})
+```
 
 
 # 2.8 Other tests of randomness 
