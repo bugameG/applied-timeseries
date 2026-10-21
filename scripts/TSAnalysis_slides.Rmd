@@ -17,7 +17,6 @@ library(grDevices)
 library(ggthemes)
 library(forecast)
 library(DT)
-library(latex2exp)
 
 opts_chunk$set(echo = TRUE)
 
@@ -38,7 +37,7 @@ sales1.ts.decomposed2 <- decompose(sales1.ts, type = "multiplicative") # Multipl
 sales1$dates <- seq(as.Date("1967-01-28"), by = "4 weeks",
                     length.out = 52)
 
-sales1 <- sales1 |> relocate(dates, .after = year)
+sales1 <- sales1 |> dplyr::relocate(dates, .after = year)
 
 sales1$aseasonal <- sales1.ts.decomposed$seasonal # Additive
 
@@ -49,8 +48,7 @@ sales1$trend <- sales1.ts.decomposed$trend # Trend
 sales1$irr <- sales1.ts.decomposed$random # Irregular fluctuations
 
 ## Ahero dry maize price
-maize <- read_excel("Cane deliveries.xlsx", 
-    sheet = "Dry maize 1kg Ahero")
+maize <- read_excel("maize.xlsx")
 
 maize$month <- factor(x = maize$month, levels = unique(maize$month),
                      labels = month.name)
@@ -64,13 +62,12 @@ maize$date <- seq(from = as.Date("2023-01-01"),
                  by = "month",
                  length.out = length(maize$price_ksh))
 
-maize <- maize |> relocate(date, .after = month)
+maize <- maize |> dplyr::relocate(date, .after = month)
 
 
 
 ## Ahero dry maize price
-cane <- read_excel("Cane deliveries.xlsx", 
-    sheet = "Cane deliveries")
+cane <- read_excel("cane.xlsx")
 
 cane$month <- factor(x = cane$month, levels = unique(cane$month),
                      labels = month.name)
@@ -84,7 +81,7 @@ cane$date <- seq(from = as.Date("2019-01-01"),
 
 cane$serial <- seq(1, length(cane$metric_tonnes_000), by = 1)
 
-cane <- cane |> relocate(date, .after = month)
+cane <- cane |> dplyr::relocate(date, .after = month)
 
 
 ### Local Electricity consumption
@@ -101,7 +98,7 @@ consumption$date <- seq(from = as.Date("2019-01-01"),
                  by = "month",
                  length.out = length(consumption$amount))
 
-consumption <- consumption |> relocate(date, .after = month)
+consumption <- consumption |> dplyr::relocate(date, .after = month)
 
 ## Mobile Payments
 mobile <- read_excel("mobile.xlsx")
@@ -133,7 +130,7 @@ mobile$date <- seq(from = as.Date("2007-03-01"),
 
 
 
-mobile <- mobile |> relocate(date, .after = transaction_volume_millions)
+mobile <- mobile |> dplyr::relocate(date, .after = transaction_volume_millions)
 
 ```
 
@@ -1010,41 +1007,145 @@ fluidPage(
   sidebarLayout(
       sidebarPanel(
         selectInput("seriesID", "Select type of series",
-                    choices = c(paste0("Non-stationary","\n","series"), 
-                                "Stationary",
-                                paste0("With","\n","outliers"), 
-                                "General"))
+                    choices = c("Non-stationary\nseries" = "nonstationary", 
+                                "Stationary\nseries" = "stationary",
+                                "With\noutliers" = "outliers", 
+                                "General" = "general"))
         , width = 3),
       mainPanel(
         tabsetPanel(id = "PlotXCorrelogram",
               tabPanel(title = "Time plot",
-                    plotlyOutput("Lefttimeplot")
+                    uiOutput("Lefttimeplot")
                              ),
               tabPanel(title = "Correlogram",
-                       plotlyOutput("Rightcorrelogram"))
+                    uiOutput("Rightcorrelogram"))
                 )
         )
     )
 )
 
-output$Lefttimeplot <- renderPlotly({
 
-  validate(
-    need(input$seriesID == "seriesID",
-         "Visualizations for this option are coming soon")
+# Simulated stationary AR(1) series
+set.seed(254) 
+  ss <- data.frame(
+    y = arima.sim(n = 91, model = list(ar = 0.56)) |> c(),
+    x = consumption$date
   )
+  
+# Subsetting consumption time series
+consumption.outlier <- consumption
+  
+# Outlier insertion at time 16 (April 2026)
+consumption.outlier$amount[88] <- 123 
 
-  correlogramtimeplot <- ggplot(data = consumption, aes(x = date))+
+output$Lefttimeplot <- renderUI({
+
+
+  if(input$seriesID == "nonstationary"){
+  # A. Non-stationary series
+  nonstationarytimeplot <- ggplot(data = consumption, aes(x = date))+
                           geom_point(aes(y = amount), colour = "#CC9933")+
                           geom_line(aes(y = amount), colour = "#CC9933",
                                     linewidth = 0.75)+
-                          labs(title = paste0("Local power consumption in '000 KWh","\n", "January 2019 - July 2026"), x = "Time", y = "Power in '000 KWh")+
+                          labs(title = paste0("Local power consumption in million  KWh","\n", "January 2019 - July 2026"), x = "Time", y = "Power in million KWh")+
                           theme_clean()
 
-  ggplotly(correlogramtimeplot)
+  ggplotly(nonstationarytimeplot)
+  
+  }else if(input$seriesID == "stationary"){
+  
+    # B. Stationary (Simulated AR 1 model)
+  stationarytimeplot <- ggplot(data = ss, aes(x = x))+
+                          geom_point(aes(y = y), colour = "#CC9933")+
+                          geom_line(aes(y = y), colour = "#CC9933",
+                                    linewidth = 0.75)+
+                          labs(title = paste0("AR(1) simulated stationary time series","\n", 
+                                              "January 2019 - July 2026 ","[ ",paste0("\u03C6"," = "),0.4," ]"), x = "Time", y = "simulated values")+
+                          theme_clean()
 
+  ggplotly(stationarytimeplot)
+  
+  }else if(input$seriesID == "outliers"){
+    
+  # C. A series with an outlier
+  outliertimeplot <- ggplot(data = consumption.outlier, aes(x = date))+
+                          geom_point(aes(y = amount), colour = "#CC9933")+
+                          geom_point(data = consumption.outlier[88,],
+                                     aes(x = date, y = amount), colour = "#000099", 
+                                     size = 1.5)+
+                          geom_line(aes(y = amount), colour = "#CC9933",
+                                    linewidth = 0.75)+
+                          labs(title = paste0("Power consumption series with artificial outlier at April 2026","\n", 
+                                              "January 2025 - July 2026 "), x = "Time", y = "Power in million KWh")+
+                          theme_clean()
 
+  ggplotly(outliertimeplot)
+  
+  }else{
+    
+  # D. General advice
+  HTML(
+    "<p> \
+    Clearly, considerable experience is required in interpreting autocorrelation coefficients.<br> \
+    We need to study the <b>probability theory of stationary series</b> and discuss the classes of models which may be appropriate.<br> \
+    It is also imperative to hold a discussion on the <b>sampling properties of r<sub>k</sub></b> <br> \
+    These topics will be discussed in the next two chapters and we shall then be in a better position to interpret the correlogram of<br> \
+    a given time series. \
+    </p>"
+  )
+  
+  }
+  
 })
+
+
+output$Rightcorrelogram <- renderUI({
+  
+  if(input$seriesID == "nonstationary"){
+    
+  # A. Non-stationary correlogram
+  nonstationarycorrelogram <- ggAcf(x = consumption$amount, type = "correlation")+
+                                labs(title = paste0("Correlogram for Power consumption series","\n","[Jan 2019 - July 2026]"),
+                                     x = "lags", y = HTML("correlation r<sub>k</sub>"))+
+                                theme_clean()
+  
+  ggplotly(nonstationarycorrelogram)
+  
+  }else if(input$seriesID == "stationary"){
+    
+  # B. Stationary correlogram
+  stationarycorrelogram <- ggAcf(x = ss$y, type = "correlation")+
+                            labs(title = paste0("Correlogram for AR(1) simulated stationary","\n", "time series with"," [","\u03C6"," = ",0.4, " ]"),
+                                 x = "lags", y = HTML("correlation r<sub>k</sub>"))+
+                            theme_clean()
+  
+  ggplotly(stationarycorrelogram)
+  
+  }else if(input$seriesID == "outliers"){
+    
+  # C. Power consumption series with an outlier
+  outliercorrelogram <- ggAcf(x = consumption.outlier$amount, type = "correlation")+
+                          labs(title = paste0("Correlogram for Power consumption series with artificial","\n","outlier at April 2026 [January 2025 - July 2026]"), 
+                               x = "lags", y = HTML("correlation r<sub>k</sub>"))+
+                          theme_clean()
+  
+  ggplotly(outliercorrelogram)
+  
+  }else{
+  
+  # D. General advice
+  HTML(
+    "<p> \
+    Clearly, considerable experience is required in interpreting autocorrelation coefficients.<br> \
+    We need to study the <b>probability theory of stationary series</b> and discuss the classes of models which may be appropriate.<br> \
+    It is also imperative to hold a discussion on the <b>sampling properties of r<sub>k</sub></b> <br> \
+    These topics will be discussed in the next two chapters and we shall then be in a better position to interpret the correlogram of<br> \
+    a given time series. \
+    </p>"
+  )
+    }
+  }
+)
 ```
 
 
