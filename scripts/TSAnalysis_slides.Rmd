@@ -775,7 +775,6 @@ output$fivepoint <- renderPlotly({
 ```{r CaneGaussianMAs, echo = FALSE}
 fluidPage(
   sidebarLayout(
-    titlePanel(""),
       sidebarPanel(
         sliderInput("rwID", "Distance from central point",
                     min = 3, max = 15, value = 5, step = 2),
