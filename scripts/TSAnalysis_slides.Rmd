@@ -1004,6 +1004,19 @@ Here the author offers some **general advice** in regards to the following serie
 ## Interpreting the correlogram | continued {.smaller}
 
 ```{r CorrelogramInterpretation, echo = FALSE}
+# Simulated stationary AR(1) series
+set.seed(254) 
+  ss <- data.frame(
+    y = arima.sim(n = 91, model = list(ar = 0.56)) |> c(),
+    x = consumption$date
+  )
+  
+# Subsetting consumption time series
+consumption.outlier <- consumption
+  
+# Outlier insertion at time 16 (April 2026)
+consumption.outlier$amount[88] <- 123 
+
 fluidPage(
   sidebarLayout(
       sidebarPanel(
@@ -1024,20 +1037,6 @@ fluidPage(
         )
     )
 )
-
-
-# Simulated stationary AR(1) series
-set.seed(254) 
-  ss <- data.frame(
-    y = arima.sim(n = 91, model = list(ar = 0.56)) |> c(),
-    x = consumption$date
-  )
-  
-# Subsetting consumption time series
-consumption.outlier <- consumption
-  
-# Outlier insertion at time 16 (April 2026)
-consumption.outlier$amount[88] <- 123 
 
 output$Lefttimeplot <- renderUI({
 
