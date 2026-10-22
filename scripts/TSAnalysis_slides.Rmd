@@ -661,7 +661,7 @@ ggplotly(quadfitplot)
 ```{r GompertzCurve, echo = FALSE}
 # Mobile money accounts Gompertz curve fitting
 accounts.model1 <- nls(
-  accounts_millions ~ SSgompertz(mobile$serial, Asym, b2, b3), data = mobile)
+  accounts_millions ~ SSgompertz(serial, Asym, b2, b3), data = mobile)
 
 # Mobile money accounts fitted values
 mobile$gompertz.fit <- predict(accounts.model1) |> round(2)
