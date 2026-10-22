@@ -776,8 +776,7 @@ output$fivepoint <- renderPlotly({
 fluidPage(
   sidebarLayout(
     titlePanel(""),
-    sidebarLayout(
-      sidebarPanel(
+     sidebarPanel(
         sliderInput("rwID", "Distance from central point",
                     min = 3, max = 15, value = 5, step = 2),
         sliderInput("sigmaID", label = paste0("Sigma - ","\u03C3"), 
@@ -785,7 +784,6 @@ fluidPage(
       mainPanel(plotlyOutput("gaussianma"))
     )
   )
-)
 
 
 output$gaussianma <- renderPlotly({
