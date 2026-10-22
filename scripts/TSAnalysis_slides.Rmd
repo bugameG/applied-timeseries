@@ -17,7 +17,10 @@ library(grDevices)
 library(ggthemes)
 library(forecast)
 library(DT)
+library(rmarkdown)
+library(rsconnect)
 
+writeManifest()
 opts_chunk$set(echo = TRUE)
 
 # Importing presentation data sets
@@ -644,7 +647,7 @@ output$quadtrendplot <- renderPlotly({
                     geom_line(aes(y = price_ksh), colour = "#333333")+
                     geom_point(aes(y = price_ksh), colour = "#333333")+
                     geom_line(aes(y = quad.fit), colour = "#336699")+
-                    annotate(geom = "text", x = as.Date("2024-06-01"), y = 82, label = paste0("price = ", round(maize.model1$coefficients[1],2)," ",  round(maize.model1$coefficients[2],2)," time", " + ", round(maize.model1$coefficients[3],2), " time^2"))+
+                    annotate(geom = "text", x = as.Date("2024-06-01"), y = 82, label = paste0("price = ", round(maize.model1$coefficients[1],2)," ",  round(maize.model1$coefficients[2],2)," time", " + ", round(maize.model1$coefficients[3],2), HTML(" time<sup>2</sup>")))+
                     labs(title = paste0("Quadratic trend of Dry maize per Kilo in Ahero - Kisumu", "\n", "January 2023 - July 2026"),
                          x = "Time", y = "Price in Ksh.")+
                     theme_clean()
@@ -692,14 +695,14 @@ output$gompertzcurveplot <- renderPlotly({
   gompertzplot <- ggplot(data = mobile, aes(x = date))+
                     geom_point(
                       aes(y = accounts_millions), 
-                      colour = "#333333") +
+                      colour = "#333333", shape = 4) +
                     geom_line(
                       aes(y = gompertz.fit), 
                       colour = "#336699") +
                     labs(title = paste0(
                         "Total Registered mobile money accounts (in millions)","\n",
                         "March 2007 - August 2026"),
-                         x = "Time", y = "Registered accounts in millions") +
+                         x = "Time", y = "Registered accounts in millions")+
                     theme_clean()
 
   
@@ -1000,7 +1003,7 @@ Here the author offers some **general advice** in regards to the following serie
 - Outliers
 - General Remarks
 
-## Interpreting the correlogram | General advice {.smaller}
+## Interpreting the correlogram | continued {.smaller}
 
 ```{r CorrelogramInterpretation, echo = FALSE}
 fluidPage(
