@@ -1073,8 +1073,8 @@ output$Correlogramnotes <- renderUI({
   HTML(
     "<p> \
     If a time series contains one or more outliers, the correlogram may be seriously affected and it may be <br> \
-    advisable to <b>adjust</b> outliers in some way before starting the formal analysis. For example <br> \
-    we have one outlier in the series and it is not adjusted. Then the plot of x<sub>t</sub> against x<sub>t+k</sub> will contain <b>two extreme points</b> which tend to <b>depress</b> the sample correlation coefficients towards 0.<br> \
+    advisable to <b>adjust</b> outliers in some way before starting the formal analysis. <br> \
+For example we have one outlier in the series and it is not adjusted. Then the plot of x<sub>t</sub> against x<sub>t+k</sub> will contain <b>two extreme points</b> which tend to <b>depress</b> the sample correlation coefficients towards 0.<br> \
     If there are two outliers, this effect is even more noticable, except where the lag equals the distance between the outliers when a spuriously large correlation may occur. \
     </p>"
   )
