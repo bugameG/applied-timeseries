@@ -802,7 +802,7 @@ output$gaussianma <- renderPlotly({
   g.sigma <- input$sigmaID
   
   ## Raw weights
-  raw.g.weights <- exp(-(time.d^2)/2*(g.sigma^2))
+  raw.g.weights <- exp(-(time.d^2) / (2 * g.sigma^2))
   final.g.weights <- raw.g.weights/sum(raw.g.weights)
 
   # Computing the weights for the cane deliveries
