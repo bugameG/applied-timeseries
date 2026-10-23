@@ -1074,7 +1074,7 @@ output$Lefttimeplot <- renderUI({
                           geom_point(aes(y = amount), colour = "#CC9933")+
                           geom_point(data = consumption.outlier[88,],
                                      aes(x = date, y = amount), colour = "#000099", 
-                                     size = 1.5)+
+                                     size = 1.5, shape = 4)+
                           geom_line(aes(y = amount), colour = "#CC9933",
                                     linewidth = 0.75)+
                           labs(title = paste0("Power consumption series with artificial outlier at April 2026","\n", 
