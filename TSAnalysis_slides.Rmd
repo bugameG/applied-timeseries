@@ -23,7 +23,7 @@ library(here)
 library(rmarkdown)
 library(rsconnect)
 
-writeManifest()
+# writeManifest()
 opts_chunk$set(echo = TRUE)
 
 # Importing presentation data sets
