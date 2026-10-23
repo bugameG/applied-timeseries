@@ -1,6 +1,8 @@
 Interactive slides for **MAS 818: Applied Time Series Analysis**
-The Analysis of Time Series: An Introduction 5th Ed. by Chris Chatfield 
-Chapter II: *Simple Descriptive Techniques*. Built in R with `ioslides_presentation` + Shiny runtime.
+
+**Book**: The Analysis of Time Series: An Introduction 5th Ed. by Chris Chatfield 
+
+**Chapter II**: *Simple Descriptive Techniques*. Built in R with `ioslides_presentation` + Shiny runtime.
 
 ## What's inside
 
