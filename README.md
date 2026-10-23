@@ -8,11 +8,11 @@ Chapter II: *Simple Descriptive Techniques*. Built in R with `ioslides_presentat
 |---|---|---|
 | `TSAnalysis_slides.Rmd` | The presentation (Shiny-powered, plotly visuals) |
 | `Convolution.png` | Figure for the filters-in-series slide |
-| `salesData Ex2.1.xlsx` | Textbook 4-weekly sales (1967-1970) | Execise 2.1 pg.25 of the book
-| `maize.xlsx` | Ahero (Kisumu) dry maize price, 2023-2026 | KNBS Leading Economic Indicators (LEI) reports 2018-2026
-| `cane.xlsx` | Cane deliveries ('000 tonnes), 2019-2026 | KNBS Leading Economic Indicators (LEI) reports 2018-2026
-| `local electricity consumption KPLC.xlsx` | Kenya power consumption (million kWh), 2019-2026 | KNBS Leading Economic Indicators (LEI) reports 2018-2026
-| `mobile.xlsx` | Mobile money agents, accounts, volume and value, 2007-2026 | Central Bank of Kenya Mobile Payment data
+| `salesData Ex2.1.xlsx` | Textbook 4-weekly sales (1967-1970) | [Execise 2.1 pg.25 of the book](https://docs.google.com/spreadsheets/d/1MuOyjepRkJtzNjgaJTbKBrThO4njMAeh/edit?usp=sharing&ouid=100299949886468366251&rtpof=true&sd=true)
+| `maize.xlsx` | Ahero (Kisumu) dry maize price, 2023-2026 | [KNBS LEI reports 2018-2026](https://www.knbs.or.ke/leading-economic-indicators/)
+| `cane.xlsx` | Cane deliveries ('000 tonnes), 2019-2026 | [KNBS LEI reports 2018-2026](https://www.knbs.or.ke/leading-economic-indicators/)
+| `local electricity consumption KPLC.xlsx` | Kenya power consumption (million kWh), 2019-2026 | [KNBS LEI reports 2018-2026](https://www.knbs.or.ke/leading-economic-indicators/)
+| `mobile.xlsx` | Mobile money agents, accounts, volume and value, 2007-2026 | [Central Bank of Kenya Mobile Payment data](https://www.centralbank.go.ke/national-payments-system/mobile-payments/)
 | `manifest.json` | rsconnect deployment manifest |
 
 ## Topics covered
