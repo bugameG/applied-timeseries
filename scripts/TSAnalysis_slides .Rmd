@@ -17,6 +17,7 @@ library(grDevices)
 library(ggthemes)
 library(forecast)
 library(DT)
+library(here)
 library(rmarkdown)
 library(rsconnect)
 
@@ -876,7 +877,7 @@ Very often a smoothing procedure is carried out in **two** or **more** stages, s
 
 ```{r, echo=FALSE, out.width="75%", fig.align="center", fig.cap=""}
 
-include_graphics(list.files()[2])
+include_graphics(here::here("convolution.png"))
 
 ```
 
@@ -1050,9 +1051,7 @@ output$Correlogramnotes <- renderUI({
     "<p> \
    If a time series contains a <b>trend</b>, then the values of r<sub>k</sub>will not come down to 0 except for very large values of the lag.<br> \
     This is because an observation on one side of the overall mean tends to be followed by a large number of further observations on the same side of the mean because of the <b>trend</b>.<br> \
-    Little can be inferred from the above correlogram simply due to dominance of the <b>trend</b>. As a matter of fact, <br> \
-    the <b>sample autocorrelation function {r<sub>k</sub>}</b> is only meaningful for <b>stationary time series</b> <br> \
-    and therefore any <b>trend</b> component should be removed before calculating {r<sub>k</sub>}\
+    Little can be inferred from the above correlogram simply due to dominance of the <b>trend</b>. As a matter of fact, the <b>sample autocorrelation function {r<sub>k</sub>}</b> is only meaningful for <b>stationary time series</b> and therefore any <b>trend</b> component should be removed before calculating {r<sub>k</sub>}\
     </p>"
   )
   }else if(input$seriesID == "stationary"){
@@ -1060,11 +1059,8 @@ output$Correlogramnotes <- renderUI({
   # B. Stationary series
   HTML(
     "<p> \
-    Stationary series often exhibit <b>short-term correlation</b> characterised by a fairly large value of r<sub>1</sub> <br> \
-    followed by a few further coefficients which, while greater than 0, tend to get <b>successively smaller.</b><br> \
-    Values for r<sub>k</sub> for larger lags tend to be <b>approximately zero</b>. A time series which produces <br> \
-    such a correlogram, is one for which an observation <b>above the mean</b>, and similarly for observations below the mean.<br> \
-    a given time series. \
+    Stationary series often exhibit <b>short-term correlation</b> characterised by a fairly large value of r<sub>1</sub> followed by a few further coefficients which, while greater than 0, tend to get <b>successively smaller.</b><br> \
+    Values for r<sub>k</sub> for larger lags tend to be <b>approximately zero</b>. A time series which produces such a correlogram, is one for which an observation <b>above the mean</b> tends to be followed by one or more further observations above the mean, and similarly for observations below the mean.<br> \
     </p>"
   )
   }else if(input$seriesID == "outliers"){
@@ -1072,9 +1068,8 @@ output$Correlogramnotes <- renderUI({
   # C. Series with an outlier
   HTML(
     "<p> \
-    If a time series contains one or more outliers, the correlogram may be seriously affected and it may be <br> \
-    advisable to <b>adjust</b> outliers in some way before starting the formal analysis. <br> \
-For example we have one outlier in the series and it is not adjusted. Then the plot of x<sub>t</sub> against x<sub>t+k</sub> will contain <b>two extreme points</b> which tend to <b>depress</b> the sample correlation coefficients towards 0.<br> \
+    If a time series contains one or more outliers, the correlogram may be seriously affected and it may be advisable to <b>adjust</b> outliers in some way before starting the formal analysis. <br> \ 
+    For example we have one outlier in the series and it is not adjusted. Then the plot of x<sub>t</sub> against x<sub>t+k</sub> will contain <b>two extreme points</b> which tend to <b>depress</b> the sample correlation coefficients towards 0.<br> \
     If there are two outliers, this effect is even more noticable, except where the lag equals the distance between the outliers when a spuriously large correlation may occur. \
     </p>"
   )
