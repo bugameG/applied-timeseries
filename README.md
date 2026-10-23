@@ -5,7 +5,7 @@ Chapter II: *Simple Descriptive Techniques*. Built in R with `ioslides_presentat
 ## What's inside
 
 | File | Purpose | Source
-|---|---|
+|---|---|---|
 | `TSAnalysis_slides.Rmd` | The presentation (Shiny-powered, plotly visuals) |
 | `Convolution.png` | Figure for the filters-in-series slide |
 | `salesData Ex2.1.xlsx` | Textbook 4-weekly sales (1967-1970) | Execise 2.1 pg.25 of the book
