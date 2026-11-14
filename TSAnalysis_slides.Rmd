@@ -280,7 +280,7 @@ ggplotly(textbooktrendplot)
 
 After the trend and cyclic variations have been removed from a set of data, we are left with a series of **residuals** which may or may not be random.
 
-## Trend Variation | Textbook sales data
+## Irregular fluctuations | Textbook sales data
 
 ```{r Textbook data irregular, echo = FALSE}
 tabsetPanel(
