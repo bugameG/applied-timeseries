@@ -1051,7 +1051,7 @@ output$Correlogramnotes <- renderUI({
   # A. Non-stationary series
   HTML(
     "<p> \
-   If a time series contains a <b>trend</b>, then the values of r<sub>k</sub>will not come down to 0 except for very large values of the lag.<br> \
+   If a time series contains a <b>trend</b>, then the values of r<sub>k</sub> will not come down to 0 except for very large values of the lag.<br> \
     This is because an observation on one side of the overall mean tends to be followed by a large number of further observations on the same side of the mean because of the <b>trend</b>.<br> \
     Little can be inferred from the above correlogram simply due to dominance of the <b>trend</b>. As a matter of fact, the <b>sample autocorrelation function {r<sub>k</sub>}</b> is only meaningful for <b>stationary time series</b> and therefore any <b>trend</b> component should be removed before calculating {r<sub>k</sub>}\
     </p>"
