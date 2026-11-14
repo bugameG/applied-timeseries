@@ -334,7 +334,7 @@ For example, economic data are sometimes thought to be affected by business cycl
 A time series is said to be stationary if;
 
 
-- there's no systematic change in mean (no trend)
+- there's no systematic change in mean (**no trend**)
 - there’s no systematic change in variance and
 - Strictly periodic variations have been removed
 
